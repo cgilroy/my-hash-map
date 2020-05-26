@@ -35,9 +35,11 @@ class DynamicArray
   end
 
   def [](i)
+    @store[i]
   end
 
   def []=(i, val)
+    @store[i] = val
   end
 
   def capacity
@@ -48,9 +50,21 @@ class DynamicArray
   end
 
   def push(val)
+    resize! if @count == capacity
+    @store[count] = val
+    @count += 1
   end
 
   def unshift(val)
+    debugger
+    resize! if @count == capacity
+    index = capacity-2
+    until index == -1
+      @store[index+1] = @store[index]
+      index += -1
+    end
+    @store[0] = val
+    @store
   end
 
   def pop
@@ -66,6 +80,7 @@ class DynamicArray
   end
 
   def each
+    
   end
 
   def to_s
@@ -83,5 +98,8 @@ class DynamicArray
   private
 
   def resize!
+    old_store = @store
+    @store = StaticArray.new(2*@count)
+    old_store.each{ |el| @store << el }
   end
 end
